@@ -1,0 +1,49 @@
+---
+title: "Summary of results"
+author: "Rodrigo Anderle"
+date: "2024-11-13"
+output:
+  word_document: default
+  html_document:
+    df_print: paged
+---
+
+```{r setup, include=FALSE, echo=FALSE}
+##packages
+require(tidyverse)
+require(bibliometrix)
+
+## Upload data
+data <- readRDS("../data/data.rds")
+
+## Analyzing results
+results <- biblioAnalysis(data)
+```
+
+## Summary of the data
+
+
+### Sources
+
+```{r}
+table(data$DB)
+```
+
+### Documents
+```{r}
+table(data$DT)
+```
+
+## Summary of Studies
+
+```{r}
+summary(results)
+```
+
+
+## 10 Most cited references
+
+```{r}
+CR <- citations(data, field = "article", sep = ";")
+cbind(CR$Cited[1:10])
+```

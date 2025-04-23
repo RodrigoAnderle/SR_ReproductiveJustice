@@ -1,0 +1,359 @@
+% Options for packages loaded elsewhere
+\PassOptionsToPackage{unicode}{hyperref}
+\PassOptionsToPackage{hyphens}{url}
+%
+\documentclass[
+]{article}
+\usepackage{amsmath,amssymb}
+\usepackage{iftex}
+\ifPDFTeX
+  \usepackage[T1]{fontenc}
+  \usepackage[utf8]{inputenc}
+  \usepackage{textcomp} % provide euro and other symbols
+\else % if luatex or xetex
+  \usepackage{unicode-math} % this also loads fontspec
+  \defaultfontfeatures{Scale=MatchLowercase}
+  \defaultfontfeatures[\rmfamily]{Ligatures=TeX,Scale=1}
+\fi
+\usepackage{lmodern}
+\ifPDFTeX\else
+  % xetex/luatex font selection
+\fi
+% Use upquote if available, for straight quotes in verbatim environments
+\IfFileExists{upquote.sty}{\usepackage{upquote}}{}
+\IfFileExists{microtype.sty}{% use microtype if available
+  \usepackage[]{microtype}
+  \UseMicrotypeSet[protrusion]{basicmath} % disable protrusion for tt fonts
+}{}
+\makeatletter
+\@ifundefined{KOMAClassName}{% if non-KOMA class
+  \IfFileExists{parskip.sty}{%
+    \usepackage{parskip}
+  }{% else
+    \setlength{\parindent}{0pt}
+    \setlength{\parskip}{6pt plus 2pt minus 1pt}}
+}{% if KOMA class
+  \KOMAoptions{parskip=half}}
+\makeatother
+\usepackage{xcolor}
+\usepackage[margin=1in]{geometry}
+\usepackage{color}
+\usepackage{fancyvrb}
+\newcommand{\VerbBar}{|}
+\newcommand{\VERB}{\Verb[commandchars=\\\{\}]}
+\DefineVerbatimEnvironment{Highlighting}{Verbatim}{commandchars=\\\{\}}
+% Add ',fontsize=\small' for more characters per line
+\usepackage{framed}
+\definecolor{shadecolor}{RGB}{248,248,248}
+\newenvironment{Shaded}{\begin{snugshade}}{\end{snugshade}}
+\newcommand{\AlertTok}[1]{\textcolor[rgb]{0.94,0.16,0.16}{#1}}
+\newcommand{\AnnotationTok}[1]{\textcolor[rgb]{0.56,0.35,0.01}{\textbf{\textit{#1}}}}
+\newcommand{\AttributeTok}[1]{\textcolor[rgb]{0.13,0.29,0.53}{#1}}
+\newcommand{\BaseNTok}[1]{\textcolor[rgb]{0.00,0.00,0.81}{#1}}
+\newcommand{\BuiltInTok}[1]{#1}
+\newcommand{\CharTok}[1]{\textcolor[rgb]{0.31,0.60,0.02}{#1}}
+\newcommand{\CommentTok}[1]{\textcolor[rgb]{0.56,0.35,0.01}{\textit{#1}}}
+\newcommand{\CommentVarTok}[1]{\textcolor[rgb]{0.56,0.35,0.01}{\textbf{\textit{#1}}}}
+\newcommand{\ConstantTok}[1]{\textcolor[rgb]{0.56,0.35,0.01}{#1}}
+\newcommand{\ControlFlowTok}[1]{\textcolor[rgb]{0.13,0.29,0.53}{\textbf{#1}}}
+\newcommand{\DataTypeTok}[1]{\textcolor[rgb]{0.13,0.29,0.53}{#1}}
+\newcommand{\DecValTok}[1]{\textcolor[rgb]{0.00,0.00,0.81}{#1}}
+\newcommand{\DocumentationTok}[1]{\textcolor[rgb]{0.56,0.35,0.01}{\textbf{\textit{#1}}}}
+\newcommand{\ErrorTok}[1]{\textcolor[rgb]{0.64,0.00,0.00}{\textbf{#1}}}
+\newcommand{\ExtensionTok}[1]{#1}
+\newcommand{\FloatTok}[1]{\textcolor[rgb]{0.00,0.00,0.81}{#1}}
+\newcommand{\FunctionTok}[1]{\textcolor[rgb]{0.13,0.29,0.53}{\textbf{#1}}}
+\newcommand{\ImportTok}[1]{#1}
+\newcommand{\InformationTok}[1]{\textcolor[rgb]{0.56,0.35,0.01}{\textbf{\textit{#1}}}}
+\newcommand{\KeywordTok}[1]{\textcolor[rgb]{0.13,0.29,0.53}{\textbf{#1}}}
+\newcommand{\NormalTok}[1]{#1}
+\newcommand{\OperatorTok}[1]{\textcolor[rgb]{0.81,0.36,0.00}{\textbf{#1}}}
+\newcommand{\OtherTok}[1]{\textcolor[rgb]{0.56,0.35,0.01}{#1}}
+\newcommand{\PreprocessorTok}[1]{\textcolor[rgb]{0.56,0.35,0.01}{\textit{#1}}}
+\newcommand{\RegionMarkerTok}[1]{#1}
+\newcommand{\SpecialCharTok}[1]{\textcolor[rgb]{0.81,0.36,0.00}{\textbf{#1}}}
+\newcommand{\SpecialStringTok}[1]{\textcolor[rgb]{0.31,0.60,0.02}{#1}}
+\newcommand{\StringTok}[1]{\textcolor[rgb]{0.31,0.60,0.02}{#1}}
+\newcommand{\VariableTok}[1]{\textcolor[rgb]{0.00,0.00,0.00}{#1}}
+\newcommand{\VerbatimStringTok}[1]{\textcolor[rgb]{0.31,0.60,0.02}{#1}}
+\newcommand{\WarningTok}[1]{\textcolor[rgb]{0.56,0.35,0.01}{\textbf{\textit{#1}}}}
+\usepackage{graphicx}
+\makeatletter
+\def\maxwidth{\ifdim\Gin@nat@width>\linewidth\linewidth\else\Gin@nat@width\fi}
+\def\maxheight{\ifdim\Gin@nat@height>\textheight\textheight\else\Gin@nat@height\fi}
+\makeatother
+% Scale images if necessary, so that they will not overflow the page
+% margins by default, and it is still possible to overwrite the defaults
+% using explicit options in \includegraphics[width, height, ...]{}
+\setkeys{Gin}{width=\maxwidth,height=\maxheight,keepaspectratio}
+% Set default figure placement to htbp
+\makeatletter
+\def\fps@figure{htbp}
+\makeatother
+\setlength{\emergencystretch}{3em} % prevent overfull lines
+\providecommand{\tightlist}{%
+  \setlength{\itemsep}{0pt}\setlength{\parskip}{0pt}}
+\setcounter{secnumdepth}{-\maxdimen} % remove section numbering
+\ifLuaTeX
+  \usepackage{selnolig}  % disable illegal ligatures
+\fi
+\usepackage{bookmark}
+\IfFileExists{xurl.sty}{\usepackage{xurl}}{} % add URL line breaks if available
+\urlstyle{same}
+\hypersetup{
+  pdftitle={Summary of results},
+  pdfauthor={Rodrigo Anderle},
+  hidelinks,
+  pdfcreator={LaTeX via pandoc}}
+
+\title{Summary of results}
+\author{Rodrigo Anderle}
+\date{2024-11-13}
+
+\begin{document}
+\maketitle
+
+\subsection{Summary of the data}\label{summary-of-the-data}
+
+\subsubsection{Sources}\label{sources}
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\FunctionTok{table}\NormalTok{(data}\SpecialCharTok{$}\NormalTok{DB)}
+\end{Highlighting}
+\end{Shaded}
+
+\begin{verbatim}
+## 
+##    ISI SCOPUS 
+##    815    268
+\end{verbatim}
+
+\subsubsection{Documents}\label{documents}
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\FunctionTok{table}\NormalTok{(data}\SpecialCharTok{$}\NormalTok{DT)}
+\end{Highlighting}
+\end{Shaded}
+
+\begin{verbatim}
+## 
+##                          ARTICLE                  ARTICLE ARTICLE 
+##                              711                                7 
+##            ARTICLE; BOOK CHAPTER            ARTICLE; EARLY ACCESS 
+##                                7                               55 
+##       ARTICLE; PROCEEDINGS PAPER                             BOOK 
+##                                1                               26 
+##                     BOOK ARTICLE                     BOOK CHAPTER 
+##                                1                              117 
+##        BOOK CHAPTER BOOK CHAPTER                        EDITORIAL 
+##                                1                                7 
+##               EDITORIAL MATERIAL EDITORIAL MATERIAL; EARLY ACCESS 
+##                               93                                2 
+##                           REVIEW                   REVIEW ARTICLE 
+##                               50                                1 
+##             REVIEW; EARLY ACCESS                     SHORT SURVEY 
+##                                2                                2
+\end{verbatim}
+
+\subsection{Summary of Studies}\label{summary-of-studies}
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\FunctionTok{summary}\NormalTok{(results)}
+\end{Highlighting}
+\end{Shaded}
+
+\begin{verbatim}
+## 
+## 
+## MAIN INFORMATION ABOUT DATA
+## 
+##  Timespan                              2006 : 2024 
+##  Sources (Journals, Books, etc)        545 
+##  Documents                             1084 
+##  Annual Growth Rate %                  35.53 
+##  Document Average Age                  2.79 
+##  Average citations per doc             7.235 
+##  Average citations per year per doc    1.434 
+##  References                            34760 
+##  
+## DOCUMENT TYPES                     
+##  article                               711 
+##  article article                       7 
+##  article; book chapter                 7 
+##  article; early access                 55 
+##  article; proceedings paper            1 
+##  book                                  26 
+##  book article                          1 
+##  book chapter                          117 
+##  book chapter book chapter             1 
+##  editorial                             7 
+##  editorial material                    93 
+##  editorial material; early access      2 
+##  review                                50 
+##  review article                        1 
+##  review; early access                  2 
+##  short survey                          2 
+##  
+## DOCUMENT CONTENTS
+##  Keywords Plus (ID)                    1158 
+##  Author's Keywords (DE)                2263 
+##  
+## AUTHORS
+##  Authors                               2370 
+##  Author Appearances                    2830 
+##  Authors of single-authored docs       407 
+##  
+## AUTHORS COLLABORATION
+##  Single-authored docs                  449 
+##  Documents per Author                  0.457 
+##  Co-Authors per Doc                    2.61 
+##  International co-authorships %        8.026 
+##  
+## 
+## Annual Scientific Production
+## 
+##  Year    Articles
+##     2006        1
+##     2008        2
+##     2009        8
+##     2010        6
+##     2011        4
+##     2012        7
+##     2013       10
+##     2014        9
+##     2015       16
+##     2016       24
+##     2017       27
+##     2018       46
+##     2019       58
+##     2020      103
+##     2021      106
+##     2022      198
+##     2023      221
+##     2024      238
+## 
+## Annual Percentage Growth Rate 35.53 
+## 
+## 
+## Most Productive Authors
+## 
+##    Authors        Articles Authors        Articles Fractionalized
+## 1     LIDDELL JL        10    NA NA                          5.00
+## 2     SUNDSTROM B        9    LIDDELL JL                     4.95
+## 3     MACLEOD CI         8    LUNA Z                         4.62
+## 4     MANN ES            8    MORISON T                      4.50
+## 5     DELAY C            7    MACLEOD CI                     4.17
+## 6     MCLEMORE MR        7    HARRIS LH                      3.62
+## 7     MORISON T          7    SUNDSTROM B                    3.34
+## 8     MOSLEY EA          7    MANN ES                        3.31
+## 9     CRAWFORD AD        6    GRZANKA PR                     3.17
+## 10    GRZANKA PR         6    ROBERTS D                      3.08
+## 
+## 
+## Top manuscripts per citations
+## 
+##                                   Paper                                              DOI  TC TCperYear  NTC
+## 1  ROSS LJ, 2017, SOULS                          10.1080/10999949.2017.1389634           232     29.00 9.55
+## 2  LUNA Z, 2013, ANNU REV LAW SOC SCI            10.1146/annurev-lawsocsci-102612-134037 224     18.67 5.50
+## 3  DI CHIRO G, 2008, ENVIRON POLIT               10.1080/09644010801936230               167      9.82 2.00
+## 4  HIGGINS JA, 2014, CONTRACEPTION               10.1016/j.contraception.2014.01.027     166     15.09 4.54
+## 5  HOOVER E, 2012, ENVIRON HEALTH PERSPECT       10.1289/ehp.1205422                     135     10.38 5.00
+## 6  PRICE K, 2010, MERIDIANS                      10.2979/meridians.2010.10.2.42          133      8.87 3.44
+## 7  BAILEY A, 2011, HYPATIA                       10.1111/j.1527-2001.2011.01168.x        104      7.43 2.72
+## 8  ROBERTS D, 2013, DU BOIS REV                  10.1017/S1742058X13000210               101      8.42 2.48
+## 9  BRANDI K, 2020, AM J OBSTET GYNECOL           10.1016/j.ajog.2019.11.1271              86     17.20 7.70
+## 10 SMIETANA M, 2018, Reprod. Biomed. Soc. Online 10.1016/j.rbms.2018.11.001               79     11.29 4.91
+## 
+## 
+## Corresponding Author's Countries
+## 
+##           Country Articles   Freq SCP MCP MCP_Ratio
+## 1  USA                 691 0.6755 672  19    0.0275
+## 2  UNITED KINGDOM       68 0.0665  54  14    0.2059
+## 3  CANADA               56 0.0547  43  13    0.2321
+## 4  AUSTRALIA            24 0.0235  20   4    0.1667
+## 5  SOUTH AFRICA         21 0.0205  18   3    0.1429
+## 6  NEW ZEALAND          19 0.0186  15   4    0.2105
+## 7  BRAZIL               18 0.0176  17   1    0.0556
+## 8  SWEDEN               16 0.0156  12   4    0.2500
+## 9  INDIA                12 0.0117  10   2    0.1667
+## 10 GERMANY              11 0.0108   9   2    0.1818
+## 
+## 
+## SCP: Single Country Publications
+## 
+## MCP: Multiple Country Publications
+## 
+## 
+## Total Citations per Country
+## 
+##      Country      Total Citations Average Article Citations
+## 1  USA                       5860                      8.48
+## 2  UNITED KINGDOM             435                      6.40
+## 3  CANADA                     250                      4.46
+## 4  AUSTRALIA                  186                      7.75
+## 5  NEW ZEALAND                166                      8.74
+## 6  SOUTH AFRICA               124                      5.90
+## 7  BELGIUM                     69                     11.50
+## 8  GERMANY                     61                      5.55
+## 9  SWEDEN                      59                      3.69
+## 10 ARGENTINA                   46                     15.33
+## 
+## 
+## Most Relevant Sources
+## 
+##                                                  Sources        Articles
+## 1  THE PALGRAVE HANDBOOK OF REPRODUCTIVE JUSTICE AND LITERATURE       31
+## 2  CONTRACEPTION                                                      19
+## 3  OBSTETRICS AND GYNECOLOGY                                          18
+## 4  MATERNAL AND CHILD HEALTH JOURNAL                                  15
+## 5  JOURNAL OF MIDWIFERY \\& WOMENS HEALTH                             13
+## 6  SIGNS                                                              13
+## 7  JOURNAL OF LAW MEDICINE \\& ETHICS                                 11
+## 8  JOURNAL OF LESBIAN STUDIES                                         11
+## 9  PSYCHOLOGY OF WOMEN QUARTERLY                                      11
+## 10 CULTURE HEALTH \\& SEXUALITY                                       10
+## 
+## 
+## Most Relevant Keywords
+## 
+##    Author Keywords (DE)      Articles Keywords-Plus (ID)     Articles
+## 1       REPRODUCTIVE JUSTICE      476   WOMEN                     171
+## 2       ABORTION                  161   HEALTH                     98
+## 3       JUSTICE                    60   UNITED-STATES              73
+## 4       REPRODUCTIVE               59   PREGNANCY                  67
+## 5       CONTRACEPTION              52   CARE                       66
+## 6       REPRODUCTIVE RIGHTS        50   EXPERIENCES                58
+## 7       INTERSECTIONALITY          47   GENDER                     52
+## 8       PREGNANCY                  45   ABORTION                   51
+## 9       REPRODUCTIVE HEALTH        45   RACE                       51
+## 10      REPRODUCTION               36   REPRODUCTIVE JUSTICE       47
+\end{verbatim}
+
+\subsection{10 Most cited references}\label{most-cited-references}
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\NormalTok{CR }\OtherTok{\textless{}{-}} \FunctionTok{citations}\NormalTok{(data, }\AttributeTok{field =} \StringTok{"article"}\NormalTok{, }\AttributeTok{sep =} \StringTok{";"}\NormalTok{)}
+\FunctionTok{cbind}\NormalTok{(CR}\SpecialCharTok{$}\NormalTok{Cited[}\DecValTok{1}\SpecialCharTok{:}\DecValTok{10}\NormalTok{])}
+\end{Highlighting}
+\end{Shaded}
+
+\begin{verbatim}
+##                                                                                               [,1]
+## ROSS LORETTARICKIE SOLINGER., 2017, REPRODUCTIVE JUSTICE: AN INTRODUCTION                      170
+## ROBERTS DOROTHY, 1997, KILLING THE BLACK BODY: RACE, REPRODUCTION, AND THE MEANING OF LIBERTY  149
+## ROSS LJ, 2017, SOULS, V19, P286, DOI 10.1080/10999949.2017.1389634                             114
+## LUNA Z, 2013, ANNU REV LAW SOC SCI, V9, P327, DOI 10.1146/ANNUREV-LAWSOCSCI-102612-134037       79
+## PRICE K, 2010, MERIDIANS, V10, P42, DOI 10.2979/MERIDIANS.2010.10.2.42                          62
+## ROSS L., 2017, RADICAL REPRODUCTIVE JUSTICE                                                     60
+## SILLIMAN J., 2004, UNDIVIDED RIGHTS: WOMEN OF COLOR ORGANIZE FOR REPRODUCTIVE JUSTICE           56
+## CRENSHAW K, 1993, STANFORD LAW REVIEW VOL 43, NO 6, JULY 1991, P1241                            42
+## HIGGINS JA, 2016, AM J PUBLIC HEALTH, V106, P1932, DOI 10.2105/AJPH.2016.303393                 34
+## DEHLENDORF C, 2010, AM J OBSTET GYNECOL, V203, DOI 10.1016/J.AJOG.2010.05.009                   33
+\end{verbatim}
+
+\end{document}

@@ -1,0 +1,512 @@
+dados %>% filter(qtd == 2)
+world_dados %>% filter(name %in% "FRANCE")
+dados
+dados %>% arrange(desc(qtd))
+data %>%
+group_by(AU1_CO) %>%
+summarise(qtd = n()) %>%
+mutate(AU1_CO = case_when(
+AU1_CO == "USA" ~ "UNITED STATES OF AMERICA",
+AU1_CO == "KOREA" ~ "SOUTH KOREA",
+TRUE ~ AU1_CO # mantém os outros nomes inalterados
+)) -> dados
+world <- ne_countries(scale = "medium", returnclass = "sf")
+world$name <- toupper(world$name)
+world_dados <- merge(world, dados, by.x = "name", by.y = "AU1_CO", all.x = TRUE)
+world_dados <- world_dados %>%
+mutate(centroid = st_centroid(geometry)) %>%
+mutate(longitude = st_coordinates(centroid)[, 1], # Extrai a longitude
+latitude = st_coordinates(centroid)[, 2])  # Extrai a latitude
+world_dados <- world_dados %>%
+mutate(
+longitude = ifelse(name == "France", 2.2137, longitude), # Longitude correta da França
+latitude = ifelse(name == "France", 46.2276, latitude)   # Latitude correta da França
+)
+ggplot(data = world) +
+geom_sf(alpha = 0.1, color = "grey") + # Países mais translúcidos
+geom_point(data = world_dados,
+aes(x = longitude, y = latitude, size = log(qtd)),
+color = "blue", alpha = 0.7) +
+geom_text(data = world_dados,
+aes(x = longitude, y = latitude, label = qtd),
+size = 3, vjust = -1) + # Adiciona os números das publicações
+theme_minimal() +
+theme(legend.position = "none",
+axis.title = element_blank(), # Remove os títulos dos eixos
+axis.text = element_blank(),  # Remove os valores nos eixos
+axis.ticks = element_blank(), # Remove os ticks dos eixos
+panel.grid = element_blank()) # Remove as linhas do grid
+world_dados$name[world_dados$name == "France"]
+world_dados$qtd[world_dados$name == "FRANCE"]
+world_dados <- world_dados %>%
+mutate(
+longitude = ifelse(name == "FRANCE", 2.2137, longitude), # Longitude correta da França
+latitude = ifelse(name == "FRANCE", 46.2276, latitude)   # Latitude correta da França
+)
+ggplot(data = world) +
+geom_sf(alpha = 0.1, color = "grey") + # Países mais translúcidos
+geom_point(data = world_dados,
+aes(x = longitude, y = latitude, size = log(qtd)),
+color = "blue", alpha = 0.7) +
+geom_text(data = world_dados,
+aes(x = longitude, y = latitude, label = qtd),
+size = 3, vjust = -1) + # Adiciona os números das publicações
+theme_minimal() +
+theme(legend.position = "none",
+axis.title = element_blank(), # Remove os títulos dos eixos
+axis.text = element_blank(),  # Remove os valores nos eixos
+axis.ticks = element_blank(), # Remove os ticks dos eixos
+panel.grid = element_blank()) # Remove as linhas do grid
+# Filtra apenas os países da Europa no seu dataset
+europa_dados <- world_dados %>% filter(region == "Europe")
+# Cria o gráfico com o zoom
+ggplot(data = europa_dados) +
+geom_sf(alpha = 0.3) +
+geom_point(aes(x = longitude, y = latitude, size = qtd),
+color = "blue", alpha = 0.7) +
+geom_text(aes(x = longitude, y = latitude, label = name),
+size = 3, vjust = -1) + # Adiciona os nomes
+theme_minimal() +
+labs(title = "Produção de Artigos na Europa", size = "Artigos") +
+theme(axis.title = element_blank(),
+axis.text = element_blank(),
+axis.ticks = element_blank(),
+panel.grid = element_blank())
+# Filtra apenas os países da Europa no seu dataset
+europa_dados <- world_dados %>% filter(region == "Europe")
+names(world_dados)
+names(world_dados)
+head(world_dados)
+# Filtra apenas os países da Europa no seu dataset
+europa_dados <- world_dados %>% filter(continent == "Europe")
+# Cria o gráfico com o zoom
+ggplot(data = europa_dados) +
+geom_sf(alpha = 0.3) +
+geom_point(aes(x = longitude, y = latitude, size = qtd),
+color = "blue", alpha = 0.7) +
+geom_text(aes(x = longitude, y = latitude, label = name),
+size = 3, vjust = -1) + # Adiciona os nomes
+theme_minimal() +
+labs(title = "Produção de Artigos na Europa", size = "Artigos") +
+theme(axis.title = element_blank(),
+axis.text = element_blank(),
+axis.ticks = element_blank(),
+panel.grid = element_blank())
+world_dados$region_un
+# Filtra apenas os países da Europa no seu dataset
+europa_dados <- world_dados %>% filter(region_un == "Europe")
+# Cria o gráfico com o zoom
+ggplot(data = europa_dados) +
+geom_sf(alpha = 0.3) +
+geom_point(aes(x = longitude, y = latitude, size = qtd),
+color = "blue", alpha = 0.7) +
+geom_text(aes(x = longitude, y = latitude, label = name),
+size = 3, vjust = -1) + # Adiciona os nomes
+theme_minimal() +
+labs(title = "Produção de Artigos na Europa", size = "Artigos") +
+theme(axis.title = element_blank(),
+axis.text = element_blank(),
+axis.ticks = element_blank(),
+panel.grid = element_blank())
+world_dados$subregion
+table(world_dados$subregion)
+# Filtra apenas os países da Europa no seu dataset
+europa_dados <- world_dados %>% filter(subregion == "Eastern Europe")
+# Cria o gráfico com o zoom
+ggplot(data = europa_dados) +
+geom_sf(alpha = 0.3) +
+geom_point(aes(x = longitude, y = latitude, size = qtd),
+color = "blue", alpha = 0.7) +
+geom_text(aes(x = longitude, y = latitude, label = name),
+size = 3, vjust = -1) + # Adiciona os nomes
+theme_minimal() +
+labs(title = "Produção de Artigos na Europa", size = "Artigos") +
+theme(axis.title = element_blank(),
+axis.text = element_blank(),
+axis.ticks = element_blank(),
+panel.grid = element_blank())
+# Filtra apenas os países da Europa no seu dataset
+europa_dados <- world_dados %>% filter(subregion == "Western Europe")
+# Cria o gráfico com o zoom
+ggplot(data = europa_dados) +
+geom_sf(alpha = 0.3) +
+geom_point(aes(x = longitude, y = latitude, size = qtd),
+color = "blue", alpha = 0.7) +
+geom_text(aes(x = longitude, y = latitude, label = name),
+size = 3, vjust = -1) + # Adiciona os nomes
+theme_minimal() +
+labs(title = "Produção de Artigos na Europa", size = "Artigos") +
+theme(axis.title = element_blank(),
+axis.text = element_blank(),
+axis.ticks = element_blank(),
+panel.grid = element_blank())
+# Filtra apenas os países da Europa no seu dataset
+europa_dados <- world_dados %>% filter(subregion %in%
+c("Western Europe","Southern Europe",
+"Northern Europe"))
+# Cria o gráfico com o zoom
+ggplot(data = europa_dados) +
+geom_sf(alpha = 0.3) +
+geom_point(aes(x = longitude, y = latitude, size = qtd),
+color = "blue", alpha = 0.7) +
+geom_text(aes(x = longitude, y = latitude, label = name),
+size = 3, vjust = -1) + # Adiciona os nomes
+theme_minimal() +
+labs(title = "Produção de Artigos na Europa", size = "Artigos") +
+theme(axis.title = element_blank(),
+axis.text = element_blank(),
+axis.ticks = element_blank(),
+panel.grid = element_blank())
+# Cria o gráfico com o zoom
+ggplot(data = europa_dados) +
+geom_sf(alpha = 0.3) +
+geom_point(aes(x = longitude, y = latitude, size = log(qtd)),
+color = "blue", alpha = 0.7) +
+geom_text(aes(x = longitude, y = latitude, label = qtd),
+size = 3, vjust = -1) + # Adiciona os nomes
+theme_minimal() +
+labs(title = "Produção de Artigos na Europa", size = "Artigos") +
+theme(legend.position = "none",
+axis.title = element_blank(),
+axis.text = element_blank(),
+axis.ticks = element_blank(),
+panel.grid = element_blank())
+# Cria o gráfico com o zoom
+ggplot(data = europa_dados) +
+geom_sf(alpha = 0.3) +
+geom_point(aes(x = longitude, y = latitude, size = log(qtd)),
+color = "blue", alpha = 0.7) +
+geom_text(aes(x = longitude, y = latitude, label = qtd),
+size = 3, vjust = -1) + # Adiciona os nomes
+theme_minimal() +
+#labs(title = "Produção de Artigos na Europa", size = "Artigos") +
+theme(legend.position = "none",
+axis.title = element_blank(),
+axis.text = element_blank(),
+axis.ticks = element_blank(),
+panel.grid = element_blank())
+ggplot(data = world) +
+geom_sf(alpha = 0.1, color = "grey") + # Países mais translúcidos
+geom_point(data = world_dados,
+aes(x = longitude, y = latitude, size = log(qtd)),
+color = "purple", alpha = 0.7) +
+geom_text(data = world_dados,
+aes(x = longitude, y = latitude, label = qtd),
+size = 3, vjust = -1) + # Adiciona os números das publicações
+theme_minimal() +
+theme(legend.position = "none",
+axis.title = element_blank(), # Remove os títulos dos eixos
+axis.text = element_blank(),  # Remove os valores nos eixos
+axis.ticks = element_blank(), # Remove os ticks dos eixos
+panel.grid = element_blank()) # Remove as linhas do grid
+# Filtra apenas os países da Europa no seu dataset
+europa_dados <- world_dados %>% filter(subregion %in%
+c("Western Europe","Southern Europe",
+"Northern Europe"))
+# Cria o gráfico com o zoom
+ggplot(data = europa_dados) +
+geom_sf(alpha = 0.1, color = "grey") +
+geom_point(aes(x = longitude, y = latitude, size = log(qtd)),
+color = "purple", alpha = 0.7) +
+geom_text(aes(x = longitude, y = latitude, label = qtd),
+size = 3, vjust = -1) + # Adiciona os nomes
+theme_minimal() +
+#labs(title = "Produção de Artigos na Europa", size = "Artigos") +
+theme(legend.position = "none",
+axis.title = element_blank(),
+axis.text = element_blank(),
+axis.ticks = element_blank(),
+panel.grid = element_blank())
+ggplot(data = world) +
+geom_sf(alpha = 0.1, color = "grey") + # Países mais translúcidos
+geom_point(data = world_dados,
+aes(x = longitude, y = latitude, size = log(qtd)),
+color = "purple", alpha = 0.7) +
+geom_text_repel(data = world_dados,
+aes(x = longitude, y = latitude, label = qtd),
+size = 3, vjust = -1) + # Adiciona os números das publicações
+theme_minimal() +
+theme(legend.position = "none",
+axis.title = element_blank(), # Remove os títulos dos eixos
+axis.text = element_blank(),  # Remove os valores nos eixos
+axis.ticks = element_blank(), # Remove os ticks dos eixos
+panel.grid = element_blank()) # Remove as linhas do grid
+require(cowplot)
+ggplot(data = world) +
+geom_sf(alpha = 0.1, color = "grey") + # Países mais translúcidos
+geom_point(data = world_dados,
+aes(x = longitude, y = latitude, size = log(qtd)),
+color = "purple", alpha = 0.7) +
+geom_text_repel(data = world_dados,
+aes(x = longitude, y = latitude, label = qtd),
+size = 3, vjust = -1) + # Adiciona os números das publicações
+theme_minimal() +
+theme(legend.position = "none",
+axis.title = element_blank(), # Remove os títulos dos eixos
+axis.text = element_blank(),  # Remove os valores nos eixos
+axis.ticks = element_blank(), # Remove os ticks dos eixos
+panel.grid = element_blank()) -> mapa_mundi
+# Filtra apenas os países da Europa no seu dataset
+europa_dados <- world_dados %>% filter(subregion %in%
+c("Western Europe","Southern Europe",
+"Northern Europe"))
+# Cria o gráfico com o zoom
+ggplot(data = europa_dados) +
+geom_sf(alpha = 0.1, color = "grey") +
+geom_point(aes(x = longitude, y = latitude, size = log(qtd)),
+color = "purple", alpha = 0.7) +
+geom_text(aes(x = longitude, y = latitude, label = qtd),
+size = 3, vjust = -1) + # Adiciona os nomes
+theme_minimal() +
+#labs(title = "Produção de Artigos na Europa", size = "Artigos") +
+theme(legend.position = "none",
+axis.title = element_blank(),
+axis.text = element_blank(),
+axis.ticks = element_blank(),
+panel.grid = element_blank()) ->mapa_europa
+# Combinação dos gráficos
+mapa_final <- ggdraw() +
+draw_plot(mapa_mundi) + # Mapa principal
+draw_plot(mapa_europa, x = 0.65, y = 0.1, width = 0.3, height = 0.3) # Recorte da Europa
+mapa_final
+ggplot(data = world) +
+geom_sf(alpha = 0.1, color = "grey") + # Países mais translúcidos
+geom_point(data = world_dados,
+aes(x = longitude, y = latitude, size = log(qtd)),
+color = "purple", alpha = 0.7) +
+geom_text(data = world_dados,
+aes(x = longitude, y = latitude, label = qtd),
+size = 3, vjust = -1) + # Adiciona os números das publicações
+theme_minimal() +
+theme(legend.position = "none",
+axis.title = element_blank(), # Remove os títulos dos eixos
+axis.text = element_blank(),  # Remove os valores nos eixos
+axis.ticks = element_blank(), # Remove os ticks dos eixos
+panel.grid = element_blank()) -> mapa_mundi
+# Filtra apenas os países da Europa no seu dataset
+europa_dados <- world_dados %>% filter(subregion %in%
+c("Western Europe","Southern Europe",
+"Northern Europe"))
+# Cria o gráfico com o zoom
+ggplot(data = europa_dados) +
+geom_sf(alpha = 0.1, color = "grey") +
+geom_point(aes(x = longitude, y = latitude, size = log(qtd)),
+color = "purple", alpha = 0.7) +
+geom_text(aes(x = longitude, y = latitude, label = qtd),
+size = 3, vjust = -1) + # Adiciona os nomes
+theme_minimal() +
+#labs(title = "Produção de Artigos na Europa", size = "Artigos") +
+theme(legend.position = "none",
+axis.title = element_blank(),
+axis.text = element_blank(),
+axis.ticks = element_blank(),
+panel.grid = element_blank()) ->mapa_europa
+# Combinação dos gráficos
+mapa_final <- ggdraw() +
+draw_plot(mapa_mundi) + # Mapa principal
+draw_plot(mapa_europa, x = 0.65, y = 0.1, width = 0.3, height = 0.3) # Recorte da Europa
+mapa_final
+ggplot(data = world) +
+geom_sf(alpha = 0.1, color = "grey") + # Países mais translúcidos
+geom_point(data = world_dados,
+aes(x = longitude, y = latitude, size = log(qtd)),
+color = "purple", alpha = 0.7) +
+geom_text(data = world_dados,
+aes(x = longitude, y = latitude, label = qtd),
+size = 3, vjust = -1) + # Adiciona os números das publicações
+geom_rect(aes(xmin = -10, xmax = 40, ymin = 35, ymax = 70),
+color = "red", fill = NA, size = 1.2) +
+theme_minimal() +
+theme(legend.position = "none",
+axis.title = element_blank(), # Remove os títulos dos eixos
+axis.text = element_blank(),  # Remove os valores nos eixos
+axis.ticks = element_blank(), # Remove os ticks dos eixos
+panel.grid = element_blank()) -> mapa_mundi
+mapa_mundi
+ggplot(data = world) +
+geom_sf(alpha = 0.1, color = "grey") + # Países mais translúcidos
+geom_point(data = world_dados,
+aes(x = longitude, y = latitude, size = log(qtd)),
+color = "purple", alpha = 0.7) +
+geom_text(data = world_dados,
+aes(x = longitude, y = latitude, label = qtd),
+size = 3, vjust = -1) + # Adiciona os números das publicações
+geom_rect(aes(xmin = -15, xmax = 35, ymin = 40, ymax = 80),
+color = "red", fill = NA, size = 1.2) +
+theme_minimal() +
+theme(legend.position = "none",
+axis.title = element_blank(), # Remove os títulos dos eixos
+axis.text = element_blank(),  # Remove os valores nos eixos
+axis.ticks = element_blank(), # Remove os ticks dos eixos
+panel.grid = element_blank()) -> mapa_mundi
+mapa_mundi
+ggplot(data = world) +
+geom_sf(alpha = 0.1, color = "grey") + # Países mais translúcidos
+geom_point(data = world_dados,
+aes(x = longitude, y = latitude, size = log(qtd)),
+color = "purple", alpha = 0.7) +
+geom_text(data = world_dados,
+aes(x = longitude, y = latitude, label = qtd),
+size = 3, vjust = -1) + # Adiciona os números das publicações
+geom_rect(aes(xmin = -15, xmax = 35, ymin = 30, ymax = 70),
+color = "red", fill = NA, size = 1.2) +
+theme_minimal() +
+theme(legend.position = "none",
+axis.title = element_blank(), # Remove os títulos dos eixos
+axis.text = element_blank(),  # Remove os valores nos eixos
+axis.ticks = element_blank(), # Remove os ticks dos eixos
+panel.grid = element_blank()) -> mapa_mundi
+mapa_mundi
+# Combinação dos gráficos
+mapa_final <- ggdraw() +
+draw_plot(mapa_mundi) + # Mapa principal
+draw_plot(
+mapa_europa,
+x = 0.02, y = 0.2,      # Posição do recorte no canto esquerdo
+width = 0.4, height = 0.4 # Aumenta o tamanho do recorte
+)
+mapa_final
+# Cria o gráfico com o zoom
+ggplot(data = europa_dados) +
+geom_sf(alpha = 0.1, color = "grey") +
+geom_point(aes(x = longitude, y = latitude, size = log(qtd)),
+color = "purple", alpha = 0.7) +
+geom_text(aes(x = longitude, y = latitude, label = qtd),
+size = 3, vjust = -1) + # Adiciona os nomes
+theme_minimal() +
+#labs(title = "Produção de Artigos na Europa", size = "Artigos") +
+theme(legend.position = "none",
+axis.title = element_blank(),
+axis.text = element_blank(),
+axis.ticks = element_blank(),
+panel.grid = element_blank()) ->mapa_europa
+# Combinação dos gráficos
+mapa_final <- ggdraw() +
+draw_plot(mapa_mundi) + # Mapa principal
+draw_plot(
+mapa_europa,
+x = 0 , y = 0,      # Posição do recorte no canto esquerdo
+width = 0.4, height = 0.4 # Aumenta o tamanho do recorte
+)
+mapa_final
+# Combinação dos gráficos
+mapa_final <- ggdraw() +
+draw_plot(mapa_mundi) + # Mapa principal
+draw_plot(
+mapa_europa,
+x = -1 , y = 0,      # Posição do recorte no canto esquerdo
+width = 0.4, height = 0.4 # Aumenta o tamanho do recorte
+)
+mapa_final
+ggplot(data = world) +
+geom_sf(alpha = 0.1, color = "grey") + # Países mais translúcidos
+geom_point(data = world_dados,
+aes(x = longitude, y = latitude, size = log(qtd)),
+color = "purple", alpha = 0.7) +
+geom_text(data = world_dados,
+aes(x = longitude, y = latitude, label = qtd),
+size = 3, vjust = -1) + # Adiciona os números das publicações
+geom_rect(aes(xmin = -10,, xmax = 30, ymin = 30, ymax = 70),
+color = "red", fill = NA, size = 1.2) +
+theme_minimal() +
+theme(legend.position = "none",
+axis.title = element_blank(), # Remove os títulos dos eixos
+axis.text = element_blank(),  # Remove os valores nos eixos
+axis.ticks = element_blank(), # Remove os ticks dos eixos
+panel.grid = element_blank()) -> mapa_mundi
+ggplot(data = world) +
+geom_sf(alpha = 0.1, color = "grey") + # Países mais translúcidos
+geom_point(data = world_dados,
+aes(x = longitude, y = latitude, size = log(qtd)),
+color = "purple", alpha = 0.7) +
+geom_text(data = world_dados,
+aes(x = longitude, y = latitude, label = qtd),
+size = 3, vjust = -1) + # Adiciona os números das publicações
+geom_rect(aes(xmin = -10,, xmax = 30, ymin = 30, ymax = 70),
+color = "red", fill = NA, size = 0.7) +
+theme_minimal() +
+theme(legend.position = "none",
+axis.title = element_blank(), # Remove os títulos dos eixos
+axis.text = element_blank(),  # Remove os valores nos eixos
+axis.ticks = element_blank(), # Remove os ticks dos eixos
+panel.grid = element_blank()) -> mapa_mundi
+mapa_mundi
+ggplot(data = world) +
+geom_sf(alpha = 0.1, color = "grey") + # Países mais translúcidos
+geom_point(data = world_dados,
+aes(x = longitude, y = latitude, size = log(qtd)),
+color = "purple", alpha = 0.7) +
+geom_text(data = world_dados,
+aes(x = longitude, y = latitude, label = qtd),
+size = 3, vjust = -1) + # Adiciona os números das publicações
+geom_rect(aes(xmin = -10,, xmax = 30, ymin = 35, ymax = 70),
+color = "red", fill = NA, size = 0.7) +
+theme_minimal() +
+theme(legend.position = "none",
+axis.title = element_blank(), # Remove os títulos dos eixos
+axis.text = element_blank(),  # Remove os valores nos eixos
+axis.ticks = element_blank(), # Remove os ticks dos eixos
+panel.grid = element_blank()) -> mapa_mundi
+mapa_mundi
+# Combinação dos gráficos
+mapa_final <- ggdraw() +
+draw_plot(mapa_mundi) + # Mapa principal
+draw_plot(
+mapa_europa,
+x = 0 , y = 0,      # Posição do recorte no canto esquerdo
+width = 0.5, height = 0.5 # Aumenta o tamanho do recorte
+)
+mapa_final
+# Combinação dos gráficos
+mapa_final <- ggdraw() +
+draw_plot(mapa_mundi) + # Mapa principal
+draw_plot(
+mapa_europa,
+x = 0 , y = 0,      # Posição do recorte no canto esquerdo
+width = 1, height = 1 # Aumenta o tamanho do recorte
+)
+mapa_final
+# Combinação dos gráficos
+mapa_final <- ggdraw() +
+draw_plot(mapa_mundi) + # Mapa principal
+draw_plot(
+mapa_europa,
+x = 0 , y = 0,      # Posição do recorte no canto esquerdo
+width = 0.9, height = .9 # Aumenta o tamanho do recorte
+)
+mapa_final
+# Combinação dos gráficos
+mapa_final <- ggdraw() +
+draw_plot(mapa_mundi) + # Mapa principal
+draw_plot(
+mapa_europa,
+x = 0 , y = 0,      # Posição do recorte no canto esquerdo
+width = 0.6, height = .6 # Aumenta o tamanho do recorte
+)
+mapa_final
+figura_completa <- mapa_mundi + mapa+europa
+figura_completa <- mapa_mundi + mapa_europa +
+plot_layout(nrow = 2)
+figura_completa
+figura_completa <- mapa_mundi + mapa_europa +
+plot_layout(ncol = 2)
+figura_completa
+# Cria o gráfico com o zoom
+ggplot(data = europa_dados) +
+geom_sf(alpha = 0.1, color = "grey") +
+geom_point(aes(x = longitude, y = latitude, size = log(qtd)),
+color = "purple", alpha = 0.7) +
+geom_text(aes(x = longitude, y = latitude, label = qtd),
+size = 3, vjust = -1) + # Adiciona os nomes
+coord_sf(xlim = c(-10, 40), ylim = c(35, 70)) + # Limite da área exibida (foco na Europa)
+theme_minimal() +
+#labs(title = "Produção de Artigos na Europa", size = "Artigos") +
+theme(legend.position = "none",
+axis.title = element_blank(),
+axis.text = element_blank(),
+axis.ticks = element_blank(),
+panel.grid = element_blank()) ->mapa_europa
+mapa_europa
+figura_completa <- mapa_mundi + mapa_europa +
+plot_layout(ncol = 2)
+figura_completa
