@@ -3,11 +3,16 @@ library(shiny)
 library(DT) # Para tabelas interativas
 library(dplyr)
 library(tidyr)
+require(stringr)
 data <- readRDS("data_results.rds")
 
 # Preparar os dados (use seu código para data_mod aqui)
 data_mod <- data %>%
   select(SR, DI, LCS, TC, AU, TI, CT, PY, AU1_CO) %>%
+  mutate(
+    AU = str_to_title(AU),
+    TI = str_to_title(TI)
+  ) %>% 
   rename(
     Referencia = SR,
     DOI = DI,
@@ -18,7 +23,8 @@ data_mod <- data %>%
     Categorías = CT,
     Año = PY,
     País = AU1_CO
-  )
+  ) %>% 
+  arrange(desc(`Co-Citas`))
 
 # Adicionar as opções "Todas" nas categorias e países
 data_mod <- data_mod %>%

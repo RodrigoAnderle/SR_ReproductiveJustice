@@ -5,6 +5,6 @@ account: scoping-review-justicia-reprodutiva
 server: shinyapps.io
 hostUrl: https://api.shinyapps.io/v1
 appId: 14591387
-bundleId: 10164415
+bundleId: 10192014
 url: https://scoping-review-justicia-reprodutiva.shinyapps.io/shinny/
 version: 1

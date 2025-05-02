@@ -12,17 +12,24 @@ data <- readRDS("data/data_results.rds")
 
 # tabla S1 ----------------------------------------------------------------
 # Seleção e modificação dos dados
-data_mod <- data %>% 
-  select(SR, DI, LCS, TC, AU, TI, CT, PY, AU1_CO) %>% 
-  rename(Referencia = SR, 
-         DOI = DI,
-         `Co-Citas` = LCS, 
-         Citas = TC, 
-         Autor = AU, 
-         Título = TI, 
-         Categorías = CT, 
-         Año = PY, 
-         País = AU1_CO)
+data_mod <- data %>%
+  select(SR, DI, LCS, TC, AU, TI, CT, PY, AU1_CO) %>%
+  mutate(
+    AU = str_to_title(AU),
+    TI = str_to_title(TI)
+  ) %>% 
+  rename(
+    Referencia = SR,
+    DOI = DI,
+    `Co-Citas` = LCS,
+    Citas = TC,
+    Autor = AU,
+    Título = TI,
+    Categorías = CT,
+    Año = PY,
+    País = AU1_CO
+  ) %>% 
+  arrange(desc(`Co-Citas`))
 
 # Criar um novo workbook (arquivo Excel)
 wb <- createWorkbook()
