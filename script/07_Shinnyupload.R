@@ -4,7 +4,7 @@ require(rsconnect)
 #shinyapp.io
 rsconnect::setAccountInfo(name='scoping-review-justicia-reprodutiva',
                           token='9A83326CDF9244501C5BAE2B71B12A7F',
-                          secret='R+XptF/4iBRSmGfCOVsNlX/6gUkb1k1MzHmVEvDD')
+                          secret='###########')
 
 
 rsconnect::deployApp("shinny")
