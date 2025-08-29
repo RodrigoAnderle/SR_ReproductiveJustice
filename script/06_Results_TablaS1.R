@@ -1,19 +1,26 @@
 
 
-# Tabla S1 - Relación de Artículos Identificados, categorizados y  --------
+# Tabla S1 - Relación de Artículos Identificados
+
+# Aim: To generate supplementary table with all the 1171 documents and main
+# results.
+# Input: previous recategorization data.frame file with 1171 documents.
+# Output: An excel table with all documents main information.
+
+
 
 ## Packages
 require(tidyverse)
 require(openxlsx)
 
 ## data
-data <- readRDS("data/data_results.rds")
+data <- readRDS("data/data_Recategorization.rds")
 
 
 # tabla S1 ----------------------------------------------------------------
 # Seleção e modificação dos dados
 data_mod <- data %>%
-  select(SR, DI, LCS, TC, AU, TI, CT, PY, AU1_CO) %>%
+  select(SR, DI, LCS, TC, AU, TI, Ejes, Categorías, PY, AU1_CO) %>%
   mutate(
     AU = str_to_title(AU),
     TI = str_to_title(TI)
@@ -25,7 +32,6 @@ data_mod <- data %>%
     Citas = TC,
     Autor = AU,
     Título = TI,
-    Categorías = CT,
     Año = PY,
     País = AU1_CO
   ) %>% 
@@ -60,3 +66,6 @@ addStyle(
 
 # Salvar o arquivo Excel com bordas
 saveWorkbook(wb, file = "data/tablaS1.xlsx", overwrite = TRUE)
+
+rm(list = ls())
+gc()

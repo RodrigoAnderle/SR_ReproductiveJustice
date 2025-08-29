@@ -1,6 +1,13 @@
 
 # DEDUPLICATING
 
+#Aim: To remove dupliacted doccuments, prioritizing versions that contain
+#reference data (web of science). 
+#Input: The initial data.frame file with 2392 documents created in the script 01. 
+#Output: A primarly deduplicated data.frame with 1288 documents. This was the
+#based file for manual categorization.
+
+# Data --------------------------------------------------------------------
 source <- readRDS("data/source.rds")
 
 
@@ -45,3 +52,5 @@ nrow(data)
 ## Saving final data
 saveRDS(data, "data/data.rds")
 rm(list = ls())
+rm(list = ls())
+gc()

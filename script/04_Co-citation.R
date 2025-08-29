@@ -1,4 +1,13 @@
+
 # Clustering description and co-citation analysis
+
+# Aim: To compute co-citation analysis.
+# Input: The previous data.frame file with 1247 documents and the manual
+# categorizations.
+# Output: A data,frame file containing the 1247 documments and its related
+# number of co-citations (LCS), and a csv file for manual checking by the
+# researchers.
+
 
 ##packages
 require(tidyverse)
@@ -39,3 +48,5 @@ write.csv2(data_summarized, "data/Artigos por categorias e co-citações.csv",
            row.names = F, fileEncoding = "UTF-8")
 
 
+rm(list = ls())
+gc()

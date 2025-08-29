@@ -1,18 +1,21 @@
-# Carregar os pacotes necessários
+# Carregar pacotes
 library(shiny)
-library(DT) # Para tabelas interativas
+library(DT)
 library(dplyr)
 library(tidyr)
-require(stringr)
-data <- readRDS("data_results.rds")
+library(stringr)
+library(plotly)
 
-# Preparar os dados (use seu código para data_mod aqui)
-data_mod <- data %>%
-  select(SR, DI, LCS, TC, AU, TI, CT, PY, AU1_CO) %>%
+# Carregar os dados
+dados_raw <- readRDS("data_results.rds")
+
+# Preparar os dados
+data_mod <- dados_raw %>%
+  select(LCS, TC, SR, TI, Ejes, Categorías, AU1_CO, PY, DI,  AU) %>%
   mutate(
     AU = str_to_title(AU),
     TI = str_to_title(TI)
-  ) %>% 
+  ) %>%
   rename(
     Referencia = SR,
     DOI = DI,
@@ -20,84 +23,142 @@ data_mod <- data %>%
     Citas = TC,
     Autor = AU,
     Título = TI,
-    Categorías = CT,
     Año = PY,
     País = AU1_CO
-  ) %>% 
-  arrange(desc(`Co-Citas`))
-
-# Adicionar as opções "Todas" nas categorias e países
-data_mod <- data_mod %>%
+  ) %>%
   mutate(
     Categorías = replace_na(Categorías, "Sin Categoría"),
     País = replace_na(País, "Sin País")
-  )
+  ) %>%
+  arrange(desc(`Co-Citas`))
 
-# Definir a interface do usuário
+# Interface
 ui <- fluidPage(
   titlePanel("Visualización de Datos - Material Suplementario"),
   sidebarLayout(
     sidebarPanel(
       h3("Filtros"),
       textInput("busca_geral", "Buscar un término general:", value = ""),
-      selectInput("categoria", "Seleccionar Categoría:", 
-                  choices = c("Todas", unique(data_mod$Categorías)), 
-                  selected = "Todas"),
-      selectInput("pais", "Seleccionar País:", 
-                  choices = c("Todas", unique(data_mod$País)), 
-                  selected = "Todas"),
-      sliderInput("ano", "Seleccionar intervalo de años:", 
-                  min = min(data_mod$Año, na.rm = TRUE), 
-                  max = max(data_mod$Año, na.rm = TRUE), 
-                  value = c(min(data_mod$Año, na.rm = TRUE), max(data_mod$Año, na.rm = TRUE))),
-      sliderInput("citas", "Seleccionar intervalo de Citas:", 
-                  min = min(data_mod$Citas, na.rm = TRUE), 
-                  max = max(data_mod$Citas, na.rm = TRUE), 
-                  value = c(min(data_mod$Citas, na.rm = TRUE), max(data_mod$Citas, na.rm = TRUE))),
-      sliderInput("co_citas", "Seleccionar intervalo de Co-Citas:", 
-                  min = min(data_mod$`Co-Citas`, na.rm = TRUE), 
-                  max = max(data_mod$`Co-Citas`, na.rm = TRUE), 
-                  value = c(min(data_mod$`Co-Citas`, na.rm = TRUE), max(data_mod$`Co-Citas`, na.rm = TRUE)))
+      selectInput("ejes", "Seleccionar Eje:",
+                  choices = c("Todas", sort(unique(data_mod$Ejes))),
+                  selected = "Todas", multiple = TRUE),
+      selectInput("categoria", "Seleccionar Categoría:",
+                  choices = c("Todas", sort(unique(data_mod$Categorías))),
+                  selected = "Todas", multiple = TRUE),
+      selectInput("pais", "Seleccionar País:",
+                  choices = c("Todas", sort(unique(data_mod$País))),
+                  selected = "Todas", multiple = TRUE),
+      sliderInput("ano", "Seleccionar intervalo de años:",
+                  min = min(data_mod$Año, na.rm = TRUE),
+                  max = max(data_mod$Año, na.rm = TRUE),
+                  value = range(data_mod$Año, na.rm = TRUE),
+                  sep = "")
     ),
     mainPanel(
-      h3("Tabla Interactiva"),
-      dataTableOutput("tabla")
+      tabsetPanel(
+        tabPanel("Tabla",
+                 textOutput("resumo"),
+                 DTOutput("tabla")),
+        tabPanel("Gráficos",
+                 h4("Documentos por Ano"),
+                 plotlyOutput("grafico_ano_barra"),
+                 br(),
+                 h4("Documentos por Eje"),
+                 plotlyOutput("grafico_eje_barra"),
+                 br(),
+                 h4("Documentos por Categoría"),
+                 plotlyOutput("grafico_categoria_barra"),
+                 br(),
+                 h4("Documentos por País"),
+                 plotlyOutput("grafico_pais_barra"))
+      )
     )
   )
 )
 
-# Definir o servidor
-server <- function(input, output) {
-  # Filtrar os dados com base nos filtros selecionados e na busca geral
+# Servidor
+server <- function(input, output, session) {
+  
   datos_filtrados <- reactive({
     dados <- data_mod %>%
       filter(
-        (Categorías == input$categoria | input$categoria == "Todas"),
-        (País == input$pais | input$pais == "Todas"),
-        Año >= input$ano[1] & Año <= input$ano[2],
-        Citas >= input$citas[1] & Citas <= input$citas[2],
-        `Co-Citas` >= input$co_citas[1] & `Co-Citas` <= input$co_citas[2]
+        (input$ejes == "Todas" | Ejes %in% input$ejes),
+        (input$categoria == "Todas" | Categorías %in% input$categoria),
+        (input$pais == "Todas" | País %in% input$pais),
+        Año >= input$ano[1] & Año <= input$ano[2]
       )
     
-    # Aplicar busca geral, se houver um termo digitado
     if (input$busca_geral != "") {
+      busca <- tolower(input$busca_geral)
       dados <- dados %>%
-        filter(
-          grepl(input$busca_geral, Referencia, ignore.case = TRUE) |
-            grepl(input$busca_geral, Autor, ignore.case = TRUE) |
-            grepl(input$busca_geral, Título, ignore.case = TRUE) |
-            grepl(input$busca_geral, Categorías, ignore.case = TRUE) |
-            grepl(input$busca_geral, País, ignore.case = TRUE)
-        )
+        filter(if_any(c(Referencia, Autor, Título, Ejes, Categorías, País),
+                      ~ str_detect(tolower(.), busca)))
     }
+    
     dados
   })
   
-  # Renderizar a tabela interativa
-  output$tabla <- renderDataTable({
-    datos_filtrados()
+  # Resumo
+  output$resumo <- renderText({
+    paste("Resultados encontrados:", nrow(datos_filtrados()))
+  })
+  
+  # Tabela
+  output$tabla <- renderDT({
+    datatable(datos_filtrados(),
+              extensions = "Buttons",
+              options = list(
+                dom = 'Bfrtip',
+                buttons = c('copy', 'csv', 'excel', 'print'),
+                pageLength = 10
+              ))
+  })
+  
+  # Gráficos
+  output$grafico_ano_barra <- renderPlotly({
+    datos_filtrados() %>%
+      count(Año) %>%
+      mutate(Año = as.character(Año)) %>%
+      plot_ly(x = ~Año, y = ~n, type = 'bar',
+              marker = list(color = 'purple')) %>%
+      layout(title = "Artigos por Ano",
+             xaxis = list(title = "Ano"),
+             yaxis = list(title = "Quantidade"))
+  })
+  
+  output$grafico_eje_barra <- renderPlotly({
+    datos_filtrados() %>%
+      count(Ejes, sort = TRUE) %>%
+      top_n(15, n) %>%
+      plot_ly(x = ~reorder(Ejes, n), y = ~n, type = 'bar',
+              marker = list(color = '#2ca02c')) %>%
+      layout(title = "Artigos por Eje (Top 15)",
+             xaxis = list(title = "Eje"),
+             yaxis = list(title = "Quantidade"))
+  })
+  
+  output$grafico_categoria_barra <- renderPlotly({
+    datos_filtrados() %>%
+      count(Categorías, sort = TRUE) %>%
+      top_n(15, n) %>%
+      plot_ly(x = ~reorder(Categorías, n), y = ~n, type = 'bar',
+              marker = list(color = '#d62728')) %>%
+      layout(title = "Artigos por Categoría (Top 15)",
+             xaxis = list(title = "Categoría"),
+             yaxis = list(title = "Quantidade"))
+  })
+  
+  output$grafico_pais_barra <- renderPlotly({
+    datos_filtrados() %>%
+      count(País, sort = TRUE) %>%
+      top_n(15, n) %>%
+      plot_ly(x = ~reorder(País, n), y = ~n, type = 'bar',
+              marker = list(color = 'blue')) %>%
+      layout(title = "Artigos por País (Top 15)",
+             xaxis = list(title = "País"),
+             yaxis = list(title = "Quantidade"))
   })
 }
 
-# Executar o aplicativo Shiny
+# Executar o app
 shinyApp(ui = ui, server = server)

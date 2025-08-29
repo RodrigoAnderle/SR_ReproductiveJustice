@@ -1,7 +1,12 @@
 
-
-
 ## Additional datamanagement for Results
+
+# Aim: To verify and complet missing information about year of publication,
+# first author affiliation, language and other adjustments (updating categories
+# and translating terms).
+# Input: Previous data.frame file with 1247 documments and co-citations
+# analysis.
+# Output: An update data.frame file with the same 1247 documents.
 
 ## Packages
 require(openxlsx)
@@ -565,13 +570,14 @@ data$DT[ids.na][13] <- "Artículo"
 data$DT[ids.na][14] <- "Artículo"
 data$DT[ids.na][15] <- "Artículo"
 data$DT[ids.na][16] <- "Artículo"
+data$DT[data$SR == "LUNA Z, 2013, ANNU REV LAW SOC SCI"] <- "ARTICLE"
 
 data %>% 
   mutate(DT = 
            case_when(
              grepl("editorial", DT, ignore.case = TRUE) ~ "Editorial",
              grepl("book|chapter", DT,ignore.case = TRUE) ~ "Libro o capítulo de libro",
-             grepl("review", DT,ignore.case = TRUE) ~ "Reseña",
+             grepl("review", DT,ignore.case = TRUE) ~ "Revisión",
              grepl("article", DT,ignore.case = TRUE) ~ "Artículo",
              TRUE ~ DT)) -> data
 
@@ -612,4 +618,6 @@ data %>% filter(
 
 # Saving dataset ----------------------------------------------------------
 saveRDS(data,"data/data_results.rds")
-
+nrow(data)
+rm(list = ls())
+gc()

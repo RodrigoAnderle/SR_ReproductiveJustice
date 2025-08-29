@@ -1,7 +1,11 @@
 
-
-
 ## Categorizing
+
+#Aim: To import manual categorizations made by the researchers. These categories
+#were updated after the first analysis. We kept the code with same structure to
+#avoid lost of information.
+# Input: Previous primarly deduplicated data with 1288 documents 
+# Output: A data.frame document with 1247 documents.
 
 ##packages
 require(tidyverse)
@@ -94,7 +98,7 @@ nrow(categorized_data)
 categorized_data %>% 
   filter(is.na(EXCLUIR)) -> categorized_data_cleaned
 nrow(categorized_data_cleaned) - b
-print("############################################################# /n
+paste("############################################################# /n
     !! categorized_data tem duas linhas a mais. Devem ser as com erros !! /n
     ############################################################# /n")
 
@@ -127,7 +131,7 @@ for(i in 1:sum(idsCT)){
 
 ## Verificar
 #Não identificadoas
-print("/n ############################################################# /n",
+paste("/n ############################################################# /n",
     " Documentos sem pares identificados para conferência manual: /n",
     categorized_data_cleaned$TI[which(idsCT)[10]], "/n",
     categorized_data_cleaned$TI[which(idsCT)[14]],"/n",
@@ -147,7 +151,7 @@ data$SR[id_prox]
 data$CT[id_prox] <- categorized_data_cleaned$CT[which(idsCT)[i]]
 i = 18
 categorized_data_cleaned[which(idsCT)[i],]
-print("/n ############################################################# /n
+paste("/n ############################################################# /n
     i = 18 tem vários artigos juntos, parece ser problema na leitura do excel./n
     Desconsiderar para categorização, ajuste será feito manualmente. /n
     ############################################################## /n")
@@ -235,5 +239,7 @@ data <-
 # saving data -------------------------------------------------------------
 
 saveRDS(data, "data/manualcategories_data.rds")
+nrow(data)
 
-
+rm(list = ls())
+gc()

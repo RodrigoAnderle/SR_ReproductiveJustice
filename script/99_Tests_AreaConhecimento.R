@@ -10,8 +10,7 @@ require(treemapify)
 
 
 ## data
-data <- readRDS("data/data_results.rds")
-
+data <- readRDS("data/data_ejes_results.rds")
 
 # Exploring ---------------------------------------------------------------
 
@@ -148,6 +147,24 @@ jpeg("data/Rede de areas do conhecimento.jpg",
 print(a)
 dev.off()
 
+
+
+
+# Nova tentativa usando ISSN e ISBNs --------------------------------------
+
+
+# Funções para buscar nos sites -------------------------------------------
+
+# Usar informações do ISSN e do ISBN para identificar as áreas temáticas
+#ISSN: https://portal.issn.org/resource/ISSN/1527-2036 (NÃO TEM CATEGORIA)
+# copilot sugeriu buscar um csv no scopus e num DOAJ, mas nenhum deles está
+# claro onde está a opção para baixar o csv.
+# https://www.elsevier.com/products/scopus/content
+#https://doaj.org/docs/public-data-dump/
+unique(data$BN)
+unique(data$BN)[2]
+unique(data$SN)
+unique(data$SN)[2]
 
 
 

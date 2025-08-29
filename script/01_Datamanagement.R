@@ -1,6 +1,9 @@
 
 # DATA MANAGEMENT
 
+#Aim: To read the bibliometric data extracted from the datasources, using
+#bibliometrix Input: Web of Science, Scopus, PubMed, BVS and Scielo results. A
+#total of 2416 documents. Output: A data.frame containing 2392 documents.
 
 # Packages ----------------------------------------------------------------
 require(bibliometrix)
@@ -71,8 +74,10 @@ nrow(M)
 #M$SR[is.na(M$SR)] <- 
 #  paste0(gsub(",.*$", "", gsub(",.*$", "", toupper(M$AU[is.na(M$SR)]))),
 #       ", ",M$PY[is.na(M$SR)])
-#nrow(M)
+nrow(M)
 
 # Database ----------------------------------------------------------------
 
 saveRDS(M, "data/source.rds")
+rm(list = ls())
+gc()
